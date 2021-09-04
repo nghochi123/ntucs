@@ -25,6 +25,7 @@ for i in range(30):
     sense.set_pixel(randint(0, 7), randint(0, 7), blue)
     # Wait for 1 second before displaying next batch
     sleep(1)
+    sense.clear()
 
 # Clear lights after finishing 30 batches
 sense.clear()

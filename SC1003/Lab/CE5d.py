@@ -33,6 +33,7 @@ while True:
     sense.set_rotation(rotates[randrot])
     sense.set_pixels(image_pixels)
     sleep(1)
+    sense.clear()
     # After 1 second, read the accelerometer data.
     x, y, z = sense.get_accelerometer_raw()
     if x > g/2:

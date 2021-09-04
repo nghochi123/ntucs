@@ -20,6 +20,7 @@ image_pixels = [c1, c1, c1, c1, c1, c1, c1, c1,
                 c1, c1, c1, c1, c1, c1, c1, c1]
 
 sense.set_pixels(image_pixels)
+sense.clear()
 
 # Modifying to switch between two colors
 
@@ -36,6 +37,7 @@ for i in range(20):
                     c1, c1, c1, c1, c1, c1, c1, c1]
     sense.set_pixels(image_pixels)
     sleep(1)
+    sense.clear()
 
 # Modifying to auto rotate in 4 random orientations
 
@@ -54,3 +56,4 @@ for i in range(20):
     sense.set_rotation(rotates[i % 4])
     sense.set_pixels(image_pixels)
     sleep(1)
+    sense.clear()

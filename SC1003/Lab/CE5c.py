@@ -28,3 +28,4 @@ for i in range(20):
     sense.set_rotation(rotates[i % 4])
     sense.set_pixels(image_pixels)
     sleep(1)
+    sense.clear()
