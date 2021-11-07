@@ -72,7 +72,7 @@ float compute1(bexpression expr)
     return op == '+' ? (o1 + o2) : op == '-' ? (o1 - o2)
                                : op == '*'   ? (o1 * o2)
                                : op == '/'   ? (o1 / o2)
-                                             : 0;
+                                             : 0; // Can use switch as well
 }
 float compute2(bexpression *expr)
 {
@@ -82,7 +82,7 @@ float compute2(bexpression *expr)
     return op == '+' ? (o1 + o2) : op == '-' ? (o1 - o2)
                                : op == '*'   ? (o1 * o2)
                                : op == '/'   ? (o1 / o2)
-                                             : 0;
+                                             : 0; // Can use switch as well
 }
 
 3.
