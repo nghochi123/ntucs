@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1642688969 source:c:\users\nghoc\desktop\github\ntucs\sc1007\lab\lab 1\main.c
+	<stdio.h>
+	<stdlib.h>
+
