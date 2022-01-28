@@ -105,37 +105,26 @@ void deleteList(ListNode **ptrHead)
 
 int moveMaxToFront(ListNode **ptrHead)
 {
-    //    ListNode *before, **after, *max;
-    ListNode *maxNode = (ListNode *)malloc(sizeof(ListNode));
-    ListNode *currentNode = (ListNode *)malloc(sizeof(ListNode));
-    ListNode *previousNode = (ListNode *)malloc(sizeof(ListNode));
-    ListNode *beforeMax = (ListNode *)malloc(sizeof(ListNode));
-    ListNode *afterMax = (ListNode *)malloc(sizeof(ListNode));
-    ListNode *original = (ListNode *)malloc(sizeof(ListNode));
-    int index = 0, count = 0;
-    currentNode = *ptrHead;
-    maxNode = *ptrHead;
-    while ((currentNode) != NULL)
+    int max = (*ptrHead)->item, index = 0, count = 0;
+    ;
+    ListNode *cur = *ptrHead, *maxNode = NULL, *prev = NULL;
+    while (cur->next != NULL)
     {
-        if (maxNode->item < currentNode->item)
-        {
-            index = count;
-            maxNode = currentNode;
-            beforeMax = previousNode;
-            afterMax = currentNode->next;
-        }
-        if (currentNode->next == NULL)
-        {
-            break;
-        }
-        previousNode = currentNode;
-        currentNode = currentNode->next;
         count++;
-        printf("%p", (currentNode));
+        if (cur->next->item > max)
+        {
+            max = cur->next->item;
+            maxNode = cur->next;
+            prev = cur;
+            index = count;
+        }
+        cur = cur->next;
     }
-
-    beforeMax->next = afterMax;
-    maxNode->next = *ptrHead;
-    *ptrHead = maxNode;
+    if (maxNode != NULL)
+    {
+        prev->next = prev->next->next;
+        maxNode->next = *ptrHead;
+        *ptrHead = maxNode;
+    }
     return index;
 }

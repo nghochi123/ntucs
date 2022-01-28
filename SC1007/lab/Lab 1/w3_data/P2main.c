@@ -118,39 +118,32 @@ void deleteList2(LinkedList *ll)
 
 void moveEvenItemsToBack(LinkedList *ll)
 {
-    ListNode *evenHead = malloc(sizeof(ListNode)), *originalList = ll->head;
-    ListNode *evenCur = malloc(sizeof(ListNode));
-    evenHead = evenCur;
-    if (originalList->item % 2 == 0)
+    ListNode *evenHead = malloc(sizeof(ListNode)), *listHead = ll->head;
+    ListNode *tempNode = malloc(sizeof(ListNode));
+    tempNode->next = evenHead;
+    if (listHead->item % 2 == 0)
     {
-        evenCur->next = malloc(sizeof(ListNode));
-        evenCur = evenCur->next;
-        evenCur->item = originalList->item;
-        ll->head = originalList->next;
+        evenHead->item = listHead->item;
+        listHead = listHead->next;
     }
-    while (originalList->next != NULL)
+    ll->head = listHead;
+    while (listHead->next != NULL)
     {
-        if (originalList->next->item % 2 == 0)
+        if (listHead->next->item % 2 == 0)
         {
-            evenCur->next = (ListNode *)malloc(sizeof(ListNode));
-            evenCur = evenCur->next;
-            evenCur->item = originalList->next->item;
-            if (originalList->next->next != NULL)
-            {
-
-                originalList->next = originalList->next->next;
-            }
-            else
-            {
-                originalList->next = NULL;
-            }
+            evenHead->next = malloc(sizeof(ListNode));
+            evenHead = evenHead->next;
+            evenHead->item = listHead->next->item;
+            listHead->next = listHead->next->next;
         }
-        if (originalList->next != NULL)
+        if (listHead->next != NULL)
         {
 
-            originalList = originalList->next;
+            listHead = listHead->next;
         }
     }
-    evenCur->next = NULL;
-    originalList->next = evenHead->next;
+    evenHead->next = malloc(sizeof(ListNode));
+    listHead->next = malloc(sizeof(ListNode));
+    evenHead->next = NULL;
+    listHead->next = tempNode->next;
 }

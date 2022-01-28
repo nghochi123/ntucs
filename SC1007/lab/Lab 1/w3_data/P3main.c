@@ -119,10 +119,24 @@ void deleteList(ListNode **ptrHead)
 
 int concatenate(ListNode **ptrHead1, ListNode *head2)
 {
-    ListNode *cur = *ptrHead1;
-    while (cur->next != NULL)
+    if (head2 == NULL)
     {
-        cur = cur->next;
+        return 1;
     }
-    cur->next = head2;
+    else if (*ptrHead1 == NULL)
+    {
+        *ptrHead1 = head2;
+        return 1;
+    }
+    else if (*ptrHead1 != NULL && head2 != NULL)
+    {
+        ListNode *cur = *ptrHead1;
+        while (cur->next != NULL)
+        {
+            cur = cur->next;
+        }
+        cur->next = head2;
+        return 1;
+    }
+    return 0;
 }
