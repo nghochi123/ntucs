@@ -68,6 +68,61 @@ int isEmptyStack(Stack s){
 
 void in2Pre(char* infix, char* prefix)
 {
- //Write your code here
+    //Write your code here
+    int i = 0, j = 0;
+    Stack s;
+    s.head = NULL;
+    s.size = 0;
+    char temp[1000] = "";
+    while(*(infix + i) != '\0'){
+        i++;
+    }
+    i--;
+    while(i >= 0){
+        if(*(infix + i) == ')' || *(infix + i) == '+' || *(infix + i) == '-' || *(infix + i) == '*' || *(infix + i) == '/' || *(infix + i) == '('){
+            if(*(infix + i) == '*' || *(infix + i) == '/' || *(infix + i) == ')'){
+                push(&s, *(infix + i));
+            }
+            else if(*(infix + i) == '+' || *(infix + i) == '-'){
+                while(s.size != 0 && (peek(s) == '*' || peek(s) == '/')){
+                    temp[j] = peek(s);
+                    j++;
+                    pop(&s);
+                }
+                push(&s, *(infix + i));
+            }
+            else if(*(infix + i) == '('){
+                while(peek(s) != ')'){
+                    temp[j] = peek(s);
+                    j++;
+                    pop(&s);
+                }
+                pop(&s);
+            } 
+        }
+        else{
+            temp[j] = *(infix + i);
+            j++;
+        }
+        // printf("%c ", *(infix + i));
+        i--;
+    }
+    while(s.size != 0){
+        if(peek(s) != ')'){
+            temp[j] = peek(s);
+            j++;
+        }
+        pop(&s);
+    }
+    j--;
+    i = 0;
+    while(j > 0){
+        *(prefix + i) = *(temp + j);
+        i++;
+        j--;
+    }
+    *(prefix + i) = *(temp + j);
+    *(prefix + i + 1) = '\0';
+
 
 }
