@@ -133,5 +133,21 @@ void printBTNode(BTNode *root,int space,int left){
 
 void preOrderIterative(BTNode *root)
 {
-//Write your code here
+    //Write your code here
+    Stack s;
+    s.top = NULL;
+    s.size = 0;
+    BTNode *temp = NULL;
+    push(&s, root);
+    while(s.size != 0){
+        temp = peek(s);
+        printf("%d ", temp->item);
+        pop(&s);
+        if(temp->right != NULL){
+            push(&s, temp->right);
+        }
+        if(temp->left != NULL){
+            push(&s, temp->left);
+        }
+    }
 }

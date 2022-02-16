@@ -85,5 +85,24 @@ void deleteTree(BTNode **root){
 }
 
 void mirrorTree(BTNode *node){
-//Write your code here
+    //Write your code here
+    BTNode *temp;
+    if(node->left == NULL && node->right == NULL){
+        return;
+    } else if(node->left == NULL){
+        node->left = node->right;
+        node->right = NULL;
+        mirrorTree (node->left);
+        return;
+    } else if(node->right == NULL){
+        node->right = node->left;
+        node->left = NULL;
+        mirrorTree(node->right);
+        return;
+    }
+    temp = node->left;
+    node->left = node->right;
+    node->right = temp;
+    mirrorTree(node->right);
+    mirrorTree (node->left);
 }

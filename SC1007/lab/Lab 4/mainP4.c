@@ -99,4 +99,19 @@ void deleteTree(BTNode **root){
 BTNode *searchNode(BTNode *node, int key)
 {
   //Write your code here
+  BTNode *left = NULL, *right = NULL;
+  if(node == NULL){
+      return NULL;
+  } else if(node->item == key){
+      return node;
+  }
+  left = searchNode(node->left, key);
+  right = searchNode(node->right, key);
+  if(left != NULL){
+      return left;
+  }
+  if(right != NULL){
+      return right;
+  }
+  return NULL;
 }

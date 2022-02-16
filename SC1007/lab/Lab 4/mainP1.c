@@ -87,5 +87,14 @@ void deleteTree(BTNode **root){
 }
 
 void printSmallerValues(BTNode *node, int m){
- //Write your code here
+    //Write your code here
+    if(node->item < m){
+        printf("%d ", node->item);
+    }
+    if(node->left != NULL){
+        printSmallerValues(node->left, m);
+    }
+    if(node->right != NULL){
+        printSmallerValues(node->right, m);
+    }
 }

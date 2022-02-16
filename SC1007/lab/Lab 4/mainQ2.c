@@ -141,5 +141,22 @@ void printBTNode(BTNode *root,int space,int left){
 
 void levelOrder(BTNode *root)
 {
-//Write your code here
+    //Write your code here
+    Queue q;
+    q.head = NULL;
+    q.tail = NULL;
+    q.size = 0;
+    BTNode *temp;
+    enqueue(&q, root);
+    while(q.size != 0){
+        temp = getFront(q);
+        printf("%d ", temp->item);
+        dequeue(&q);
+        if(temp->left != NULL){
+            enqueue(&q, temp->left);
+        }
+        if(temp->right != NULL){
+            enqueue(&q, temp->right);
+        }
+    }
 }

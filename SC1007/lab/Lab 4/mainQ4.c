@@ -84,6 +84,40 @@ void deleteTree(BTNode **root){
 	}
 }
 
+int minimum(int a, int b, int c){
+    if(a < b){
+        if(a < c){
+            return a;
+        } else{
+            return c;
+        }
+    } else{
+        if(b < c){
+            return b;
+        } else{
+            return c;
+        }
+    }
+}
+
 int smallestValue(BTNode *node){
-//Write your code here
+    //Write your code here
+    int left = node->item, right = node->item;
+    int cur = node->item;
+    if(node->left != NULL && node->right != NULL){
+        left = smallestValue(node->left);
+        right = smallestValue(node->right);
+        return minimum(left, right, cur);
+    } 
+    else if(node->left != NULL){
+        left = smallestValue(node->left);
+        return minimum(left, right, cur);
+    } 
+    else if(node->right != NULL){
+        right = smallestValue(node->right);
+        return minimum(left, right, cur);
+    } 
+    else{
+        return minimum(left, right, cur);
+    }
 }

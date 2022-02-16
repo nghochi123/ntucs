@@ -84,8 +84,29 @@ void deleteTree(BTNode **root){
 	}
 }
 
+int hasChild(BTNode *node){
+    if(node->left != NULL || node->right != NULL){
+        return 1;
+    }
+    return 0;
+}
 
 int hasGreatGrandchild(BTNode *node){
-//Write your code here
-
+    //Write your code here
+    int yes = 0;
+    if(node->left != NULL){
+        if(hasChild(node->left) == 1){
+            yes = 1;
+        }
+        hasGreatGrandchild(node->left);
+    }
+    if(node->right != NULL){
+        if(hasChild(node->right) == 1){
+            yes = 1;
+        }
+        hasGreatGrandchild(node->right);
+    }
+    if(yes == 1){
+        printf("%d ", node->item);
+    }
 }
