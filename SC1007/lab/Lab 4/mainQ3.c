@@ -1,108 +1,137 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct _btnode{
+typedef struct _btnode
+{
     int item;
     struct _btnode *left;
     struct _btnode *right;
 } BTNode;
 
-BTNode* insertBTNode(BTNode* cur, int item);
-void printBTNode(BTNode *root, int space,int left);
+BTNode *insertBSTNode(BTNode *cur, int item);
+BTNode *insertBTNode(BTNode *cur, int item);
+
+void printBTNode(BTNode *root, int space, int left);
 void deleteTree(BTNode **root);
 
-void mirrorTree(BTNode *node);
+int isBST(BTNode *root);
 
 int main()
 {
-    BTNode* root=NULL;
+    BTNode *rootBST = NULL;
+    BTNode *rootBT = NULL;
     int item;
 
     printf("Enter a list of numbers for a Binary Tree, terminated by any non-digit character: \n");
-    while(scanf("%d",&item))
-        root = insertBTNode(root, item);
+    while (scanf("%d", &item))
+    {
+        rootBST = insertBSTNode(rootBST, item);
+        rootBT = insertBTNode(rootBT, item);
+    }
     scanf("%*s");
 
-    printf("Original Tree\n");
-    printBTNode(root,0,0);
-    printf("---------------------------------------------------------------\n");
-    mirrorTree(root);
-    printBTNode(root,0,0);
-    printf("Mirrored Tree\n");
+    printf("The binary tree is %s:\n", isBST(rootBST) ? "a BST" : "not a BST");
+    printBTNode(rootBST, 0, 0);
+    printf("The binary tree is %s:\n", isBST(rootBT) ? "a BST" : "not a BST");
+    printBTNode(rootBT, 0, 0);
 
-    deleteTree(&root);
-    root=NULL;
+    deleteTree(&rootBST);
+    rootBST = NULL;
+    deleteTree(&rootBT);
+    rootBT = NULL;
 
     return 0;
 }
 
-BTNode* insertBTNode(BTNode* cur, int item){
-    if (cur == NULL){
-	BTNode* node = (BTNode*) malloc(sizeof(BTNode));
-	node->item = item;
-	node->left = node->right = NULL;
-	return node;
-	}
-    if (rand()%2)
-        cur->left  = insertBTNode (cur->left, item);
+BTNode *insertBTNode(BTNode *cur, int item)
+{
+    if (cur == NULL)
+    {
+        BTNode *node = (BTNode *)malloc(sizeof(BTNode));
+        node->item = item;
+        node->left = node->right = NULL;
+        return node;
+    }
+    if (rand() % 2)
+        cur->left = insertBTNode(cur->left, item);
     else
-        cur->right = insertBTNode (cur->right, item);
+        cur->right = insertBTNode(cur->right, item);
 
     return cur;
 }
-void printBTNode(BTNode *root,int space,int left){
-      if (root != NULL)
-      {
 
-          int i;
-          for (i = 0; i < space-1; i++)
-                 printf("|\t");
-
-
-          if(i<space){
-            if(left==1)
-              printf("|---");
-            else
-              printf("|___");
-          }
-
-          printf("%d\n", root->item);
-
-          space++;
-          printBTNode(root->left, space,1);
-          printBTNode(root->right, space,0);
-      }
-}
-
-void deleteTree(BTNode **root){
-    if (*root != NULL)
-	{
-		deleteTree(&((*root)->left));
-		deleteTree(&((*root)->right));
-		free(*root);
-		*root = NULL;
-	}
-}
-
-void mirrorTree(BTNode *node){
-    //Write your code here
-    BTNode *temp;
-    if(node->left == NULL && node->right == NULL){
-        return;
-    } else if(node->left == NULL){
-        node->left = node->right;
-        node->right = NULL;
-        mirrorTree (node->left);
-        return;
-    } else if(node->right == NULL){
-        node->right = node->left;
-        node->left = NULL;
-        mirrorTree(node->right);
-        return;
+BTNode *insertBSTNode(BTNode *cur, int item)
+{
+    if (cur == NULL)
+    {
+        BTNode *node = (BTNode *)malloc(sizeof(BTNode));
+        node->item = item;
+        node->left = node->right = NULL;
+        return node;
     }
-    temp = node->left;
-    node->left = node->right;
-    node->right = temp;
-    mirrorTree(node->right);
-    mirrorTree (node->left);
+    if (item < cur->item)
+        cur->left = insertBSTNode(cur->left, item);
+    else if (item > cur->item)
+        cur->right = insertBSTNode(cur->right, item);
+    else
+        printf("Duplicated Item: %d\n", item);
+
+    return cur;
+}
+
+void printBTNode(BTNode *root, int space, int left)
+{
+    if (root != NULL)
+    {
+
+        int i;
+        for (i = 0; i < space - 1; i++)
+            printf("|\t");
+
+        if (i < space)
+        {
+            if (left == 1)
+                printf("|---");
+            else
+                printf("|___");
+        }
+
+        printf("%d\n", root->item);
+
+        space++;
+        printBTNode(root->left, space, 1);
+        printBTNode(root->right, space, 0);
+    }
+}
+
+void deleteTree(BTNode **root)
+{
+    if (*root != NULL)
+    {
+        deleteTree(&((*root)->left));
+        deleteTree(&((*root)->right));
+        free(*root);
+        *root = NULL;
+    }
+}
+
+int isBSTHelper(BTNode *root, int min, int max)
+{
+    int left = 0, right = 0;
+    if (root == NULL)
+    {
+        return 1;
+    }
+    else if (root->item < min || root->item > max)
+    {
+        return 0;
+    }
+    left = isBSTHelper(root->left, min, root->item);
+    right = isBSTHelper(root->right, root->item, max);
+    return left * right;
+}
+
+int isBST(BTNode *root)
+{
+    return isBSTHelper(root, -999999, 999999);
 }

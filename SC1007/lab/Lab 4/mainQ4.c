@@ -1,123 +1,138 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct _btnode{
+typedef struct _btnode
+{
     int item;
     struct _btnode *left;
     struct _btnode *right;
 } BTNode;
 
-BTNode* insertBTNode(BTNode* cur, int item);
-void printBTNode(BTNode *root, int space,int left);
+BTNode *insertBSTNode(BTNode *cur, int item);
+
+void printBTNode(BTNode *root, int space, int left);
+BTNode *findBSTNode(BTNode *cur, int item);
 void deleteTree(BTNode **root);
 
-int smallestValue(BTNode *node);
+void rotateRNode(BTNode **node);
 
 int main()
 {
-    BTNode* root=NULL;
+    BTNode *rootBST = NULL;
+    BTNode *cur = NULL;
     int item;
+    int option;
 
     printf("Enter a list of numbers for a Binary Tree, terminated by any non-digit character: \n");
-    while(scanf("%d",&item))
-        root = insertBTNode(root, item);
+    while (scanf("%d", &item))
+    {
+        rootBST = insertBSTNode(rootBST, item);
+    }
     scanf("%*s");
 
-    printf("The Binary Tree:\n");
-    printBTNode(root,0,0);
+    printBTNode(rootBST, 0, 0);
 
-    if(root){
-        printf("The smallest number in the tree is %d.\n",smallestValue(root));
-        deleteTree(&root);
-        root=NULL;
-    }
+    printf("Enter an integer to be searched in the tree:\n");
+    scanf("%d", &item);
 
+    cur = findBSTNode(rootBST, item);
+
+    printf("about its left child (0) or right child (1): ");
+    scanf("%d", &option);
+
+    if (cur != NULL)
+        if (option)
+            rotateRNode(&(cur->right));
+        else
+            rotateRNode(&(cur->left));
+
+    printBTNode(rootBST, 0, 0);
+
+    deleteTree(&rootBST);
+    rootBST = NULL;
     return 0;
 }
 
-BTNode* insertBTNode(BTNode* cur, int item){
-    if (cur == NULL){
-	BTNode* node = (BTNode*) malloc(sizeof(BTNode));
-	node->item = item;
-	node->left = node->right = NULL;
-	return node;
-	}
-    if (rand()%2)
-        cur->left  = insertBTNode (cur->left, item);
+BTNode *insertBSTNode(BTNode *cur, int item)
+{
+    if (cur == NULL)
+    {
+        BTNode *node = (BTNode *)malloc(sizeof(BTNode));
+        node->item = item;
+        node->left = node->right = NULL;
+        return node;
+    }
+    if (item < cur->item)
+        cur->left = insertBSTNode(cur->left, item);
+    else if (item > cur->item)
+        cur->right = insertBSTNode(cur->right, item);
     else
-        cur->right = insertBTNode (cur->right, item);
+        printf("Duplicated Item: %d\n", item);
 
     return cur;
 }
 
-void printBTNode(BTNode *root,int space,int left){
-      if (root != NULL)
-      {
+void printBTNode(BTNode *root, int space, int left)
+{
+    if (root != NULL)
+    {
 
-          int i;
-          for (i = 0; i < space-1; i++)
-                 printf("|\t");
+        int i;
+        for (i = 0; i < space - 1; i++)
+            printf("|\t");
 
-
-          if(i<space){
-            if(left==1)
-              printf("|---");
+        if (i < space)
+        {
+            if (left == 1)
+                printf("|---");
             else
-              printf("|___");
-          }
+                printf("|___");
+        }
 
-          printf("%d\n", root->item);
+        printf("%d\n", root->item);
 
-          space++;
-          printBTNode(root->left, space,1);
-          printBTNode(root->right, space,0);
-      }
+        space++;
+        printBTNode(root->left, space, 1);
+        printBTNode(root->right, space, 0);
+    }
 }
 
-void deleteTree(BTNode **root){
+BTNode *findBSTNode(BTNode *cur, int item)
+{
+    if (cur == NULL)
+    {
+        printf("Not Found\n");
+        return cur;
+    }
+
+    if (item == cur->item)
+    {
+        printf("Found\n");
+        return cur;
+    }
+
+    if (item < cur->item)
+        return findBSTNode(cur->left, item);
+    else
+        return findBSTNode(cur->right, item);
+}
+
+void deleteTree(BTNode **root)
+{
     if (*root != NULL)
-	{
-		deleteTree(&((*root)->left));
-		deleteTree(&((*root)->right));
-		free(*root);
-		*root = NULL;
-	}
-}
-
-int minimum(int a, int b, int c){
-    if(a < b){
-        if(a < c){
-            return a;
-        } else{
-            return c;
-        }
-    } else{
-        if(b < c){
-            return b;
-        } else{
-            return c;
-        }
+    {
+        deleteTree(&((*root)->left));
+        deleteTree(&((*root)->right));
+        free(*root);
+        *root = NULL;
     }
 }
 
-int smallestValue(BTNode *node){
-    //Write your code here
-    int left = node->item, right = node->item;
-    int cur = node->item;
-    if(node->left != NULL && node->right != NULL){
-        left = smallestValue(node->left);
-        right = smallestValue(node->right);
-        return minimum(left, right, cur);
-    } 
-    else if(node->left != NULL){
-        left = smallestValue(node->left);
-        return minimum(left, right, cur);
-    } 
-    else if(node->right != NULL){
-        right = smallestValue(node->right);
-        return minimum(left, right, cur);
-    } 
-    else{
-        return minimum(left, right, cur);
-    }
+void rotateRNode(BTNode **node)
+{
+    // Write Your Code Here
+    BTNode *leftChild = (*node)->left, *orig = *node;
+    orig->left = leftChild->right;
+    leftChild->right = orig;
+    *node = leftChild;
 }

@@ -1,162 +1,221 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct _btnode{
-	int item;
-	struct _btnode *left;
-	struct _btnode *right;
+typedef struct _btnode
+{
+    int item;
+    struct _btnode *left;
+    struct _btnode *right;
 } BTNode;
 
-typedef struct _queueNode{
-	BTNode *data;
-	struct _queueNode *next;
-}QueueNode;
-
-typedef struct _queue{
-   int size;
-   QueueNode *head;
-   QueueNode *tail;
-} Queue;
-
-//Prototypes of Interface functions for Queue structure
-void enqueue(Queue *qPtr, BTNode * data);
-int dequeue(Queue *qPtr);
-BTNode* getFront(Queue q);
-int isEmptyQueue(Queue q);
-
-BTNode* insertBTNode(BTNode* cur, int item);
-void removeAll(BTNode **node);
-void printBTNode(BTNode *root, int space,int left);
-
-
-void levelOrder(BTNode *root);
+BTNode *insertBSTNode(BTNode *cur, int item);
+void printBTNode(BTNode *root, int space, int left);
+void deleteTree(BTNode **root);
+int removeBSTNode(BTNode **nodePtr, int item);
+BTNode *findBSTNode(BTNode **root, int val);
 
 int main()
 {
-    BTNode* root=NULL;
+    BTNode *root = NULL;
     int item;
 
     printf("Enter a list of numbers for a Binary Tree, terminated by any non-digit character: \n");
-    while(scanf("%d",&item))
-        root = insertBTNode(root, item);
+    while (scanf("%d", &item))
+        root = insertBSTNode(root, item);
     scanf("%*s");
 
-    printBTNode(root,0,0);
-    levelOrder(root);
+    printf("The Binary Search Tree:\n");
+    printBTNode(root, 0, 0);
 
-    removeAll(&root);
+    printf("Enter an integer to be removed from the tree:\n");
+    scanf("%d", &item);
 
+    if (removeBSTNode(&root, item))
+        printf("%d was removed\n", item);
+
+    else
+        printf("%d is not in the tree.\n", item);
+
+    printf("The Binary Search Tree:\n");
+    printBTNode(root, 0, 0);
+
+    deleteTree(&root);
+    root = NULL;
     return 0;
 }
 
-void enqueue(Queue *qPtr, BTNode *data){
-    QueueNode *newNode;
-    newNode = malloc(sizeof(QueueNode));
-    newNode->data = data;
-    newNode->next = NULL;
-
-    if(isEmptyQueue(*qPtr))
-        qPtr->head=newNode;
-    else
-        qPtr->tail->next = newNode;
-
-    qPtr->tail = newNode;
-    qPtr->size++;
-}
-
-int dequeue(Queue *qPtr){
-    if(qPtr==NULL || qPtr->head==NULL){ //Queue is empty or NULL pointer
-        return 0;
+BTNode *insertBSTNode(BTNode *cur, int item)
+{
+    if (cur == NULL)
+    {
+        BTNode *node = (BTNode *)malloc(sizeof(BTNode));
+        node->item = item;
+        node->left = node->right = NULL;
+        return node;
     }
-    else{
-       QueueNode *temp = qPtr->head;
-       qPtr->head = qPtr->head->next;
-       if(qPtr->head == NULL) //Queue is emptied
-           qPtr->tail = NULL;
-
-       free(temp);
-       qPtr->size--;
-       return 1;
-    }
-}
-
-BTNode* getFront(Queue q){
-    return q.head->data;
-}
-
-int isEmptyQueue(Queue q){
-    if(q.size==0) return 1;
-    else return 0;
-}
-
-BTNode* insertBTNode(BTNode* cur, int item){
-    if (cur == NULL){
-	BTNode* node = (BTNode*) malloc(sizeof(BTNode));
-	node->item = item;
-	node->left = node->right = NULL;
-	return node;
-	}
-    if (rand()%2)
-        cur->left  = insertBTNode (cur->left, item);
+    if (item < cur->item)
+        cur->left = insertBSTNode(cur->left, item);
+    else if (item > cur->item)
+        cur->right = insertBSTNode(cur->right, item);
     else
-        cur->right = insertBTNode (cur->right, item);
+        printf("Duplicated Item: %d\n", item);
 
     return cur;
 }
 
-void removeAll(BTNode **node)
+void printBTNode(BTNode *root, int space, int left)
 {
-	if (*node != NULL)
-	{
-		removeAll(&((*node)->left));
-		removeAll(&((*node)->right));
-		free(*node);
-		*node = NULL;
-	}
-}
+    if (root != NULL)
+    {
 
-void printBTNode(BTNode *root,int space,int left){
-      if (root != NULL)
-      {
+        int i;
+        for (i = 0; i < space - 1; i++)
+            printf("|\t");
 
-          int i;
-          for (i = 0; i < space-1; i++)
-                 printf("|\t");
-
-
-          if(i<space){
-            if(left==1)
-              printf("|---");
+        if (i < space)
+        {
+            if (left == 1)
+                printf("|---");
             else
-              printf("|___");
-          }
+                printf("|___");
+        }
 
-          printf("%d\n", root->item);
+        printf("%d\n", root->item);
 
-          space++;
-          printBTNode(root->left, space,1);
-          printBTNode(root->right, space,0);
-      }
+        space++;
+        printBTNode(root->left, space, 1);
+        printBTNode(root->right, space, 0);
+    }
 }
 
-void levelOrder(BTNode *root)
+void deleteTree(BTNode **root)
 {
-    //Write your code here
-    Queue q;
-    q.head = NULL;
-    q.tail = NULL;
-    q.size = 0;
-    BTNode *temp;
-    enqueue(&q, root);
-    while(q.size != 0){
-        temp = getFront(q);
-        printf("%d ", temp->item);
-        dequeue(&q);
-        if(temp->left != NULL){
-            enqueue(&q, temp->left);
+    if (*root != NULL)
+    {
+        deleteTree(&((*root)->left));
+        deleteTree(&((*root)->right));
+        free(*root);
+        *root = NULL;
+    }
+}
+
+int removeBSTNode(BTNode **nodePtr, int item)
+{
+    // Write Your Code Here
+    BTNode *prev = NULL, *cur = *nodePtr;
+    int side = -1; // Left 0 right 1
+    while (cur->item != item)
+    {
+        if (item > cur->item)
+        {
+            if (cur->right == NULL)
+            {
+                cur = NULL;
+                break;
+            }
+            prev = cur;
+            cur = cur->right;
+            side = 1;
         }
-        if(temp->right != NULL){
-            enqueue(&q, temp->right);
+        else if (item < cur->item)
+        {
+            if (cur->left == NULL)
+            {
+                cur = NULL;
+                break;
+            }
+            prev = cur;
+            cur = cur->left;
+            side = 0;
         }
+        else
+        {
+            break;
+        }
+    }
+    if (cur == NULL)
+    {
+        return 0;
+    }
+    else
+    {
+        if (cur->left == NULL && cur->right == NULL)
+        {
+            if (prev == NULL)
+            {
+                *nodePtr = NULL;
+            }
+            else if (side == 0)
+            {
+                prev->left = NULL;
+            }
+            else
+            {
+                prev->right = NULL;
+            }
+        }
+        else if (cur->left != NULL && cur->right == NULL)
+        {
+            if (prev == NULL)
+            {
+                *nodePtr = cur->left;
+            }
+            else if (side == 0)
+            {
+                prev->left = cur->left;
+            }
+            else
+            {
+
+                prev->right = cur->left;
+            }
+        }
+        else if (cur->left == NULL && cur->right != NULL)
+        {
+            if (prev == NULL)
+            {
+                *nodePtr = cur->right;
+            }
+            else if (side == 0)
+            {
+                prev->left = cur->right;
+            }
+            else
+            {
+
+                prev->right = cur->right;
+            }
+        }
+        else if (cur->left != NULL && cur->right != NULL)
+        {
+            BTNode *p = cur, *c = cur->left;
+            while (c->left != NULL)
+            {
+                p = c;
+                c = c->left;
+            }
+            if (prev == NULL)
+            {
+                *nodePtr = c;
+                c->left = cur->left;
+                c->right = cur->right;
+                p->left = NULL;
+            }
+            else if (side == 0)
+            {
+                p->left = NULL;
+                prev->left = c;
+                c->left = cur->left;
+                c->right = cur->right;
+            }
+            else
+            {
+                p->left = NULL;
+                prev->right = c;
+                c->left = cur->left;
+                c->right = cur->right;
+            }
+        }
+        return 1;
     }
 }
