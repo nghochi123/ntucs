@@ -14,18 +14,17 @@ void insertionSort(int *array, int len)
     int smallest, temp, sIndex;
     for (int i = 0; i < len; i++)
     {
-        smallest = array[i];
-        sIndex = i;
-        for (int j = i; j < len; j++)
+        for (int j = i; j > 0; j--)
         {
-            if (array[j] < smallest)
+            if (array[j] < array[j - 1])
             {
-                smallest = array[j];
-                sIndex = j;
+                int temp = array[j];
+                array[j] = array[j - 1];
+                array[j - 1] = temp;
             }
+            else
+                break;
         }
-        array[sIndex] = array[i];
-        array[i] = smallest;
     }
 }
 

@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class P2 {
 
   public static char getGrade(int salary, int merit) {
-    if (salary <= 899 && salary >= 700) {
+    if (salary >= 700) {
       if (salary >= 800 || merit >= 20) {
         return 'A';
       } else {
