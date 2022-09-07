@@ -1,4 +1,3 @@
-import java.awt.event.KeyListener;
 import java.util.Scanner;
 
 public class DiceApp {
@@ -12,7 +11,6 @@ public class DiceApp {
       diceCount == 0 ? "first" : "second"
     );
     try {
-      System.in.read();
       sc.nextLine();
     } catch (Exception e) {}
   }
@@ -25,7 +23,7 @@ public class DiceApp {
     sum += d.getDiceValue();
     diceCount++;
     pressEnterToContinue(sc);
-    d = new Dice();
+    d.setDiceValue();
     d.printDiceValue();
     sum += d.getDiceValue();
     System.out.printf("Your total number is %d.\n", sum);
