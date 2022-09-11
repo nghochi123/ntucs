@@ -6,7 +6,7 @@ SIZE_TO_SWITCH = 10
 NUM_DATASETS = 5
 
 if __name__ == '__main__':
-    for sts in range(0, 25, 5):
+    for sts in range(10, 25, 5):
         for i in range(3, 8):
             for j in [1]:
                 if i == 7 and j == 5:

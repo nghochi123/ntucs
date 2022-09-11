@@ -78,14 +78,10 @@ class MergeInsertionSort():
         s = self.mergesort(self.originalArray)
         b = datetime.datetime.now()
         self.timetaken_ms = b - a
-        a = datetime.datetime.now()
-        s = self.mergesort(self.originalArray)
-        b = datetime.datetime.now()
-        self.timetaken_mis = b - a
         return s
 
     def write_mis_data(self):
-        with open("C:\\Users\\nghoc\\Desktop\\GitHub\\ntucs\\SC2001\\Lab\\Project 1\\combined_shortened.csv", "a") as f:
+        with open("C:\\Users\\nghoc\\Desktop\\GitHub\\ntucs\\SC2001\\Lab\\Project 1\\ms_shortened.csv", "a") as f:
             f.write(
                 f"{self.max_val},{self.size_to_switch},{self.keycomparisons},{self.timetaken_ms},{self.timetaken_mis}\n")
             f.close()
