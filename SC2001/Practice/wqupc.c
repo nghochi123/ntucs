@@ -2,12 +2,12 @@
 #include <stdio.h>
 
 int SIZE = 10;
-int *sz;
 
 struct QUArray
 {
     int *array;
     int size;
+    int *sz;
 };
 
 void printArray(struct QUArray array)
@@ -31,28 +31,30 @@ struct QUArray createArray(int numItems)
     return array;
 }
 
-int fnd(struct QUArray array, int id)
+int pcfind(struct QUArray array, int id)
 {
     if (array.array[id] != id)
     {
-        return fnd(array, array.array[id]);
+        int rootID = pcfind(array, array.array[id]);
+        array.array[id] = rootID;
+        return rootID;
     }
     return id;
 }
 
 void wquni(struct QUArray array, int firstID, int secondID)
 {
-    int a = fnd(array, firstID);
-    int b = fnd(array, secondID);
-    if (sz[a] < sz[b])
+    int a = pcfind(array, firstID);
+    int b = pcfind(array, secondID);
+    if (array.sz[a] < array.sz[b])
     {
         array.array[a] = b;
-        sz[b] += a;
+        array.sz[b] += a;
     }
     else
     {
         array.array[b] = a;
-        sz[a] += b;
+        array.sz[a] += b;
     }
     printArray(array);
 }
@@ -60,10 +62,10 @@ void wquni(struct QUArray array, int firstID, int secondID)
 int main()
 {
     struct QUArray array = createArray(SIZE);
-    sz = malloc(sizeof(int) * SIZE);
+    array.sz = malloc(sizeof(int) * SIZE);
     for (int i = 0; i < SIZE; i++)
     {
-        sz[i] = 1;
+        array.sz[i] = 1;
     }
     printArray(array);
     // wquni(array, 3, 4);

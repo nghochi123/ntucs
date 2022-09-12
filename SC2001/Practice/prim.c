@@ -134,6 +134,7 @@ void prim(int **g)
         visited[i] = 0;
         connectedFrom[i] = -1;
     }
+    connectedFrom[0] = 0;
     verts[0] = 0;
     visited[0] = 1;
     struct Edge PQ[500];
@@ -150,6 +151,7 @@ void prim(int **g)
     int sum = 0;
     for (int i = 0; i < VERTICES; i++)
     {
+        printf("Linked %d with %d with weight %d\n", connectedFrom[i], i, verts[i]);
         sum += verts[i];
     }
     printf("Total weight: %d\n", sum);
