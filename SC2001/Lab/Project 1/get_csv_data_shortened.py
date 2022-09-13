@@ -6,7 +6,7 @@ SIZE_TO_SWITCH = 10
 NUM_DATASETS = 5
 
 if __name__ == '__main__':
-    for sts in range(10, 25, 5):
+    for sts in range(0, 25, 2):
         for i in range(3, 8):
             for j in [1]:
                 if i == 7 and j == 5:
@@ -25,7 +25,7 @@ if __name__ == '__main__':
                                 os.getcwd(), f"10^{a}x{b}\\{c}")[0]
                             mis = MergeInsertionSort(array, sts, (10**i) * j)
                             mis.sort()
-                            mis.write_mis_data()
+                            mis.write_mis_data(10**a * b)
                 os.chdir(
                     "C:\\Users\\nghoc\\Desktop\\GitHub\\ntucs\\SC2001\\Lab\\Project 1")
                 wipe_folder(

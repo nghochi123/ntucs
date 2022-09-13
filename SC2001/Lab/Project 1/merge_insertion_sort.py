@@ -20,14 +20,14 @@ class MergeInsertionSort():
         self.timetaken_mis = 0
 
     def insertionsort(self, array):
-        length = len(array)
-        for i in range(length):
-            for j in range(i, 0, -1):
-                self.keycomparisons += 1
-                if array[j] < array[j - 1]:
-                    array[j - 1], array[j] = array[j], array[j-1]
-                else:
-                    break
+        for i in range(1, len(array)):
+            key = array[i]
+            j = i-1
+        while j >= 0 and key < array[j]:
+            self.keycomparisons += 1
+            array[j + 1] = array[j]
+            j -= 1
+        array[j + 1] = key
         return array
 
     def merge(self, arrLeft, arrRight):
@@ -75,15 +75,15 @@ class MergeInsertionSort():
 
     def sort(self):
         a = datetime.datetime.now()
-        s = self.mergesort(self.originalArray)
+        s = self.merge_insertion_sort(self.originalArray)
         b = datetime.datetime.now()
-        self.timetaken_ms = b - a
+        self.timetaken_mis = b - a
         return s
 
-    def write_mis_data(self):
-        with open("C:\\Users\\nghoc\\Desktop\\GitHub\\ntucs\\SC2001\\Lab\\Project 1\\ms_shortened.csv", "a") as f:
+    def write_mis_data(self, numitems):
+        with open("C:\\Users\\nghoc\\Desktop\\GitHub\\ntucs\\SC2001\\Lab\\Project 1\\data_merge_insertion_new.csv", "a") as f:
             f.write(
-                f"{self.max_val},{self.size_to_switch},{self.keycomparisons},{self.timetaken_ms},{self.timetaken_mis}\n")
+                f"{self.max_val},{self.size_to_switch},{self.keycomparisons},{self.timetaken_mis},{numitems}\n")
             f.close()
 
 
