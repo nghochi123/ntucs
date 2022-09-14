@@ -23,11 +23,11 @@ class MergeInsertionSort():
         for i in range(1, len(array)):
             key = array[i]
             j = i-1
-        while j >= 0 and key < array[j]:
-            self.keycomparisons += 1
-            array[j + 1] = array[j]
-            j -= 1
-        array[j + 1] = key
+            while j >= 0 and key < array[j]:
+                self.keycomparisons += 1
+                array[j + 1] = array[j]
+                j -= 1
+            array[j + 1] = key
         return array
 
     def merge(self, arrLeft, arrRight):
