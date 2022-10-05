@@ -66,9 +66,9 @@ void addEdge(struct Graph *graph, int src,
         newAdjListNode(dest, weight);
     newNode->next = graph->array[src].head;
     graph->array[src].head = newNode;
-    newNode = newAdjListNode(src, weight);
-    newNode->next = graph->array[dest].head;
-    graph->array[dest].head = newNode;
+    // newNode = newAdjListNode(src, weight);
+    // newNode->next = graph->array[dest].head;
+    // graph->array[dest].head = newNode;
 }
 
 struct Node

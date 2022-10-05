@@ -1,3 +1,13 @@
 {
-    "java.format.settings.url": "eclipse-formatter.xml"
+    "java.format.settings.url": "eclipse-formatter.xml",
+    "files.associations": {
+        "iostream": "cpp",
+        "ostream": "cpp",
+        "vector": "cpp",
+        "xstring": "cpp",
+        "string.h": "c",
+        "iosfwd": "cpp",
+        "xiosbase": "cpp",
+        "chrono": "cpp"
+    }
 }
