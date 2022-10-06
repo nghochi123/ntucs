@@ -12,14 +12,14 @@ def wipe_folder(folder):
 
 def create_all_datasets():
     os.chdir(os.path.join(os.getcwd(), 'datasets'))
-    for vertices in range(5, 25):
+    for vertices in range(5, 1500000, 10000):
         x = randint(0, (vertices - 3) * 10)
         y = randint(0, (vertices * 10) - 1)
         filename = f"10x{vertices}"
         nodes = []
         weights = []
         for edges in range(20):
-            for c in range(40):
+            for c in range(50 * vertices):
                 while [x, y] in nodes:
                     x = randint(0, (vertices - 3) * 10)
                     y = randint(0, (vertices * 10) - 1)
