@@ -28,10 +28,60 @@ int *createCharJump(char *pattern, int patternLen)
     return charSet;
 }
 
+int *createMatchJump(char *pattern, int patternLen)
+{
+    int *matchJump = malloc(patternLen * sizeof(int));
+    int *shift = malloc(patternLen * sizeof(int) + 1);
+    int *borderPosition = malloc(patternLen * sizeof(int) + 1);
+    for (int x = 0; x < patternLen; x++)
+    {
+        shift[x] = 0;
+    }
+    int i = patternLen, j = patternLen + 1;
+    borderPosition[i] = j;
+    while (i > 0)
+    {
+        while (j <= patternLen && pattern[i - 1] != pattern[j - 1])
+        {
+            if (shift[j] == 0)
+            {
+                shift[j] = j - i;
+            }
+            j = borderPosition[j];
+        }
+        i--;
+        j--;
+        borderPosition[i] = j;
+    }
+    j = borderPosition[0];
+    for (i = 0; i <= patternLen; i++)
+    {
+        if (shift[i] == 0)
+        {
+            shift[i] = j;
+        }
+        if (i == j)
+        {
+            j = borderPosition[j];
+        }
+    }
+    for (int i = 0; i < patternLen; i++)
+    {
+        matchJump[i] = patternLen - i - 1 + shift[i + 1];
+    }
+
+    return matchJump;
+}
+
 int bm(char *text, char *pattern)
 {
     int tl = strlen(text), pl = strlen(pattern);
     int *charSet = createCharJump(pattern, pl);
+    int *matchJump = createMatchJump(pattern, pl);
+    for (int i = 0; i < pl; i++)
+    {
+        printf("%d: CharSet: %d, MatchJump: %d\n", i, charSet[i], matchJump[i]);
+    }
     int textPtr = pl - 1, patternPtr;
     while (textPtr < tl)
     {
