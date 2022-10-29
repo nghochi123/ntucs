@@ -3,7 +3,7 @@
 
 int main()
 {
-    vector<Mammal> zoo;
+    vector<Mammal *> zoo;
     int choice = 0, numAnimals = 0;
     string name;
     string owner;
@@ -20,8 +20,7 @@ int main()
             cin >> name;
             cout << "What is it's owner's name?" << endl;
             cin >> owner;
-            Dog dog(name, Black, owner);
-            zoo.push_back(dog);
+            zoo.push_back(new Dog(name, Black, owner));
             break;
         }
         case 2:
@@ -30,8 +29,7 @@ int main()
             cin >> name;
             cout << "What is it's owner's name?" << endl;
             cin >> owner;
-            Cat cat(name, Black, owner);
-            zoo.push_back(cat);
+            zoo.push_back(new Cat(name, Black, owner));
             break;
         }
 
@@ -41,8 +39,7 @@ int main()
             cin >> name;
             cout << "What is it's owner's name?" << endl;
             cin >> owner;
-            Lion lion(name, Black, owner);
-            zoo.push_back(lion);
+            zoo.push_back(new Lion(name, Black, owner));
             break;
         }
 
@@ -51,9 +48,9 @@ int main()
             cout << "Moving all animals - Animals will move, speak and eat in order." << endl;
             for (auto mammal : zoo)
             {
-                mammal.move();
-                mammal.speak();
-                mammal.eat();
+                mammal->move();
+                mammal->speak();
+                mammal->eat();
             }
             cout << "All animals in the zoo have been moved." << endl;
             break;
@@ -61,6 +58,10 @@ int main()
 
         case 5:
             cout << "Exiting..." << endl;
+            for (auto mammal : zoo)
+            {
+                delete mammal;
+            }
             break;
         default:
             cout << "Invalid choice" << endl;
