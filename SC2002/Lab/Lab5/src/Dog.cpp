@@ -14,5 +14,5 @@ void Dog::speak()
 }
 void Dog::move()
 {
-    cout << "Dog Walk " << Animal::_name << endl;
+    cout << "Dog Walk " << endl;
 }

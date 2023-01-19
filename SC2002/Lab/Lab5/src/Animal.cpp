@@ -11,7 +11,7 @@ Animal::Animal() : _name("unknown")
 }
 Animal::Animal(string n, COLOR c) : _name(n), _color(c)
 {
-    cout << "Constructing Animal Object with name " << _name << " and color " << _color << endl;
+    cout << "Constructing Animal Object with name " << _name << " and color " << ToString(_color) << endl;
 }
 Animal::~Animal()
 {

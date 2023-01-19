@@ -60,5 +60,6 @@ int main()
         cout << "Enter profit of item " << i << endl;
         cin >> p[i];
     }
-    cout << "The most profit you can get from the knapsack is " << knapsack_dynamic(w, p, cap, n) << endl;
+    cout << "The most profit you can get from the knapsack is \n"
+         << knapsack_dynamic(w, p, cap, n) << endl;
 }
